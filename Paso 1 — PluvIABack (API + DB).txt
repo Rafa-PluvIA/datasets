@@ -1,0 +1,37 @@
+Paso 1 — PluvIABack (API + DB)
+
+cd PluvIABack
+cp .env.example .env
+Editar .env y completar:
+
+DATABASE_URL — usuario/password de su PostgreSQL local (formato: postgresql://USER:PASSWORD@localhost:5432/pluvia_db?schema=public).
+PORT=3001 (importante: el front apunta a 3001, el .env.example viene con 3000).
+CORS_ORIGIN=http://localhost:8080.
+JWT_ACCESS_SECRET y JWT_REFRESH_SECRET — cualquier string largo.
+STORAGE_TYPE=local.
+Crear la base vacía en PostgreSQL:
+
+
+CREATE DATABASE pluvia_db;
+Después:
+
+
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npx ts-node -r dotenv/config prisma/seed.ts
+npm run start:dev
+El back queda escuchando en http://localhost:3001. Swagger: http://localhost:3001/api/docs.
+
+Usuarios que crea el seed:
+
+Email	Password	Rol
+admin@pluvia.com	Admin1234!	admin
+productor@pluvia.com	Productor1234!	productor
+aguador@pluvia.com	Aguador1234!	aguador
+Paso 2 — PluvIAFront (UI)
+
+cd PluvIAFront
+cp .env.example .env   # ya viene apuntando a http://localhost:3001/api
+npm install
+npm run dev
